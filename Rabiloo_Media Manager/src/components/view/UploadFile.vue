@@ -1,46 +1,48 @@
 <template>
-  <div>Upload File</div>
-  <input type="file" name="file" @change="changeFile" />
-  <ul class="List-images" v-if="listFile.length > 0">
-    <li v-for="(item, index) in listFile" :key="index" class="img-wrap">
-      <img :src="item" />
-    </li>
-  </ul>
+  <el-form
+    :model="numberValidateForm"
+    label-width="100px"
+    class="demo-ruleForm"
+  >
+    <el-form-item
+      label="age"
+      prop="age"
+    >
+      <el-input
+        v-model.number="numberValidateForm.age"
+        type="text"
+        autocomplete="off"
+      />
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="submitForm(formRef)">Submit</el-button>
+      <el-button @click="resetForm(formRef)">Reset</el-button>
+    </el-form-item>
+  </el-form>
 </template>
-<script>
 
-export default {
-  name: "UploadFile",
-  methods: {
-    /**
-     * Mô tả: Thêm url vào listFile để render UI
-     * CreatedBy: VanND (01/04/2022)
-     */
-    changeFile(e) {
-      const name = e.target.name,
-        file = e.target.files[0];
-      const hasName = ["file"].includes(name);
-      if (hasName && file) {
-        this[name] = file;
-        this.url = URL.createObjectURL(file);
-        this.listFile.push(this.url);
-      } else {
-        console.log("error");
-      }
-    },
-  },
-  data() {
-    return {
-      file: "",
-      listFile: [],
-      url: "",
-    };
-  },
-  watch: {
-    file(val) {
-      console.log(val);
-    },
-  },
-};
+<script lang="ts" setup>
+import { reactive, ref } from 'vue'
+import type { FormInstance } from 'element-plus'
+
+const numberValidateForm = reactive({
+  age: '',
+})
+
+const submitForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.validate((valid) => {
+    if (valid) {
+      console.log('submit!')
+    } else {
+      console.log('error submit!')
+      return false
+    }
+  })
+}
+
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.resetFields()
+}
 </script>
-<style></style>
