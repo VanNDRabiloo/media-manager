@@ -1,0 +1,11 @@
+.upload-file {
+  display: flex;
+  justify-content: center;
+  margin-top: 30vh;
+  height: 100%;
+}
+
+.upload-file #btnSave {
+  position: relative;
+  left: 55px;
+}
